@@ -1,0 +1,11 @@
+#pragma once
+
+#include <Atrium.hpp>
+
+class IrisApplication : public Atrium::AtriumApplication
+{
+public:
+	bool HandleStartup() override;
+	void HandleFrameLogic() override;
+	void HandleShutdown() override;
+};
