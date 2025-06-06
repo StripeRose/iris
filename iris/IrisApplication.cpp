@@ -8,7 +8,7 @@ bool IrisApplication::HandleStartup()
 
 	myWindow->OnClosed.Connect(this, [&](auto) { Exit(); });
 
-	// Todo: Create render-target for window.
+	myTarget = std::make_unique<Atrium::RenderTarget>(*myWindow);
 
 	myWindow->Show();
 

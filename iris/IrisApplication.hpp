@@ -11,4 +11,5 @@ public:
 
 private:
 	std::unique_ptr<Atrium::Window> myWindow;
+	std::unique_ptr<Atrium::RenderTarget> myTarget;
 };
