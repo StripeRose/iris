@@ -8,4 +8,7 @@ public:
 	bool HandleStartup() override;
 	void HandleFrameLogic() override;
 	void HandleShutdown() override;
+
+private:
+	std::unique_ptr<Atrium::Window> myWindow;
 };

@@ -2,10 +2,17 @@
 
 bool IrisApplication::HandleStartup()
 {
-	// Todo: Create window.
+	myWindow = std::make_unique<Atrium::Window>();
+	myWindow->SetTitle("Iris Application Window");
+	myWindow->SetSize(Atrium::Size(640, 480));
+
+	myWindow->OnClosed.Connect(this, [&](auto) { Exit(); });
+
 	// Todo: Create render-target for window.
 
-	return false;
+	myWindow->Show();
+
+	return true;
 }
 
 void IrisApplication::HandleFrameLogic()
