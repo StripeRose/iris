@@ -10,8 +10,6 @@ bool IrisApplication::HandleStartup()
 
 	myWindow->OnClosed.Connect(this, [&](auto) { Exit(); });
 
-	myTarget = std::make_unique<Atrium::RenderTarget>(*myWindow);
-
 	myWindow->Show();
 
 	return true;
@@ -25,7 +23,7 @@ void IrisApplication::HandleFrameLogic()
 	const float secondsElapsed = static_cast<float>(millisecondsElapsed) / 1000.f;
 
 	Atrium::Graphics::ClearColor(
-		*myTarget,
+		*myWindow,
 		Atrium::Lerp(
 			Atrium::Color::Predefined::CornflowerBlue,
 			Atrium::Color::Predefined::Orange,
