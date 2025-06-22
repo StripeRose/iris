@@ -43,6 +43,7 @@ void IrisApplication::HandleShutdown()
 
 void IrisApplication::HandleGUI()
 {
+	#if IS_IMGUI_ENABLED
 	if (ImGui::Begin("Test window"))
 	{
 		ImGui::TextUnformatted("This is some testing text");
@@ -50,4 +51,5 @@ void IrisApplication::HandleGUI()
 		ImGui::InputText("Label", str.data(), str.size());
 	}
 	ImGui::End();
+	#endif
 }
