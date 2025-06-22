@@ -10,5 +10,8 @@ public:
 	void HandleShutdown() override;
 
 private:
+	void HandleGUI();
+
 	std::unique_ptr<Atrium::Window> myWindow;
+	std::unique_ptr<Atrium::ImGuiHandler> myImGuiHandler;
 };

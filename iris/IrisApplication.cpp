@@ -4,11 +4,13 @@
 
 bool IrisApplication::HandleStartup()
 {
-	myWindow = std::make_unique<Atrium::Window>();
+	myWindow.reset(new Atrium::Window());
 	myWindow->SetTitle("Iris Application Window");
 	myWindow->SetSize(Atrium::Size(640, 480));
 
-	myWindow->OnClosed.Connect(this, [&](auto) { Exit(); });
+	myWindow->OnClosed.Connect(this, [&](auto&) { Exit(); });
+
+	myImGuiHandler.reset(new Atrium::ImGuiHandler(*myWindow, [&]() { HandleGUI(); }));
 
 	myWindow->Show();
 
@@ -30,6 +32,8 @@ void IrisApplication::HandleFrameLogic()
 			(Atrium::Sine(secondsElapsed) + 1.f) * 0.5f
 		)
 	);
+
+	myImGuiHandler->Render();
 }
 
 void IrisApplication::HandleShutdown()
@@ -37,37 +41,13 @@ void IrisApplication::HandleShutdown()
 	
 }
 
-//std::unique_ptr<Atrium::EngineInstance> ourEngineInstance;
-//
-//std::shared_ptr<Atrium::RenderTexture> ourWindowTarget;
-//
-//void HandleStart()
-//{
-//	Atrium::WindowManager::CreationParameters windowParameters;
-//	windowParameters.Title = "Test window";
-//	windowParameters.Size = { 640, 480 };
-//
-//	std::shared_ptr<Atrium::Window> window = ourEngineInstance->GetWindowManager().NewWindow(windowParameters);
-//	ourWindowTarget = ourEngineInstance->GetGraphicsAPI().GetResourceManager().CreateRenderTextureForWindow(*window);
-//	window->Closed.Connect(nullptr, [](Atrium::Window&) { ourWindowTarget.reset(); });
-//}
-//
-//void HandleLoop()
-//{
-//	if (ourEngineInstance->GetWindowManager().GetWindows().empty())
-//	{
-//		ourEngineInstance->Stop();
-//		return;
-//	}
-//
-//	Atrium::FrameGraphicsContext& frameContext = ourEngineInstance->GetGraphicsAPI().GetCurrentFrameContext();
-//	if (ourWindowTarget)
-//	{
-//		frameContext.ClearColor(ourWindowTarget, Atrium::Color::Predefined::CornflowerBlue);
-//	}
-//}
-//
-//void HandleExit()
-//{
-//	ourWindowTarget.reset();
-//}
+void IrisApplication::HandleGUI()
+{
+	if (ImGui::Begin("Test window"))
+	{
+		ImGui::TextUnformatted("This is some testing text");
+		static std::array<char, 256> str;
+		ImGui::InputText("Label", str.data(), str.size());
+	}
+	ImGui::End();
+}
