@@ -12,6 +12,7 @@ bool IrisApplication::HandleStartup()
 
 	myImGuiHandler.reset(new Atrium::ImGuiHandler(*myWindow, [&]() { HandleGUI(); }));
 
+	myWindow->SetWindowState(Atrium::Window::WindowState::Maximized);
 	myWindow->Show();
 
 	return true;
@@ -43,13 +44,18 @@ void IrisApplication::HandleShutdown()
 
 void IrisApplication::HandleGUI()
 {
-	#if IS_IMGUI_ENABLED
-	if (ImGui::Begin("Test window"))
+	if (ImGui::BeginMainMenuBar())
 	{
-		ImGui::TextUnformatted("This is some testing text");
-		static std::array<char, 256> str;
-		ImGui::InputText("Label", str.data(), str.size());
+		if (ImGui::BeginMenu("DMX"))
+		{
+			myDMXHandler.HandleGUI_MenuItems();
+			ImGui::EndMenu();
+		}
+
+		ImGui::EndMainMenuBar();
 	}
-	ImGui::End();
-	#endif
+
+	ImGui::DockSpaceOverViewport(0, 0, ImGuiDockNodeFlags_PassthruCentralNode);
+
+	myDMXHandler.HandleGUI();
 }
