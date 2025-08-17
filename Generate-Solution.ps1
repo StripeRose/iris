@@ -1,0 +1,2 @@
+$sharpmakecs = "$PSScriptRoot/sharpmake.cs".Replace('\', '/')
+& "$PSScriptRoot/atrium/libraries/rose-common/tools/Sharpmake/Sharpmake.Application/bin/Release/net6.0/Sharpmake.Application.exe" "/sources('$sharpmakecs')"
