@@ -1,32 +1,41 @@
 #include "IrisApplication.hpp"
 
+#include "Atrium_Color.hpp"
+#include "Atrium_GUI.hpp"
+
+#include "Core_FrameContext.hpp"
+#include "Core_GraphicsAPI.hpp"
+#include "Core_RenderTexture.hpp"
+#include "Core_WindowManagement.hpp"
+
 #include <chrono>
 
 bool IrisApplication::HandleStartup()
 {
-	myWindow.reset(new Atrium::Window());
+	myWindow = GetWindowHandler().NewWindow();
 	myWindow->SetTitle("Iris Application Window");
-	myWindow->SetSize(Atrium::Size(640, 480));
+	myWindow->SetSize(Atrium::SizeT<int>(640, 480));
+	myWindow->SetWindowState(Atrium::Core::Window::WindowState::Maximized);
 
-	myWindow->OnClosed.Connect(this, [&](auto&) { Exit(); });
+	myWindow->OnClosed.Connect(this, [&]() { Exit(); });
 
-	myImGuiHandler.reset(new Atrium::ImGuiHandler(*myWindow, [&]() { HandleGUI(); }));
+	myWindowTarget = GetGraphicsHandler().GetResourceManager().CreateRenderTextureForWindow(*myWindow);
+	myImGuiHandler.reset(new Atrium::ImGuiHandler(myWindow, myWindowTarget, [&]() { HandleGUI(); }));
 
-	myWindow->SetWindowState(Atrium::Window::WindowState::Maximized);
 	myWindow->Show();
 
 	return true;
 }
 
-void IrisApplication::HandleFrameLogic()
+void IrisApplication::HandleFrameLogic(Atrium::Core::FrameGraphicsContext& aFrameContext)
 {
 	static auto startPoint = std::chrono::high_resolution_clock::now();
 	const auto millisecondsElapsed = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - startPoint).count();
 
 	const float secondsElapsed = static_cast<float>(millisecondsElapsed) / 1000.f;
 
-	Atrium::Graphics::ClearColor(
-		*myWindow,
+	aFrameContext.ClearColor(
+		myWindowTarget,
 		Atrium::Lerp(
 			Atrium::Color::Predefined::CornflowerBlue,
 			Atrium::Color::Predefined::Orange,
