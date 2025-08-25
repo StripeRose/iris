@@ -20,7 +20,7 @@ bool IrisApplication::HandleStartup()
 	myWindow->OnClosed.Connect(this, [&]() { Exit(); });
 
 	myWindowTarget = GetGraphicsHandler().GetResourceManager().CreateRenderTextureForWindow(*myWindow);
-	myImGuiHandler.reset(new Atrium::ImGuiHandler(myWindow, myWindowTarget, [&]() { HandleGUI(); }));
+	myImGuiHandler.reset(new Atrium::GUIHandler(myWindow, myWindowTarget, [&]() { HandleGUI(); }));
 
 	myWindow->Show();
 

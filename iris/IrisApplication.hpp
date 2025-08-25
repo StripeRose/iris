@@ -3,7 +3,7 @@
 #include "DMXHandler.hpp"
 
 #include <Atrium_AtriumApplication.hpp>
-#include <Atrium_ImGui.hpp>
+#include <Atrium_GUIHandler.hpp>
 
 class IrisApplication : public Atrium::AtriumApplication
 {
@@ -19,5 +19,5 @@ private:
 
 	std::shared_ptr<Atrium::Core::Window> myWindow;
 	std::shared_ptr<Atrium::Core::RenderTexture> myWindowTarget;
-	std::unique_ptr<Atrium::ImGuiHandler> myImGuiHandler;
+	std::unique_ptr<Atrium::GUIHandler> myImGuiHandler;
 };
