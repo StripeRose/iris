@@ -2,6 +2,8 @@ using System.IO;
 
 [module: Sharpmake.Include("../atrium/engine/sharpmake.cs")]
 
+[module: Sharpmake.Include("../atrium/extensions/DearImGui/sharpmake.cs")]
+
 namespace Iris
 {
 	[Sharpmake.Generate]
@@ -20,6 +22,9 @@ namespace Iris
 			conf.SolutionFolder = "Executables";
 			
 			conf.AddPrivateDependency<Atrium.Engine>(target);
+
+			if (target.Optimization != Sharpmake.Optimization.Retail)
+				conf.AddPrivateDependency<DearImGui>(target);
 
 			// conf.VcxprojUserFile = new Sharpmake.Project.Configuration.VcxprojUserFileSettings();
 			// conf.VcxprojUserFile.LocalDebuggerWorkingDirectory = "$(OutputPath)../data/";

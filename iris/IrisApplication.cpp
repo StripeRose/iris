@@ -1,7 +1,6 @@
 #include "IrisApplication.hpp"
 
 #include "Atrium_Color.hpp"
-#include "Atrium_GUI.hpp"
 
 #include "Atrium_FrameContext.hpp"
 #include "Atrium_GraphicsAPI.hpp"
@@ -20,7 +19,10 @@ bool IrisApplication::HandleStartup()
 	myWindow->OnClosed.Connect(this, [&]() { Exit(); });
 
 	myWindowTarget = GetGraphicsHandler().GetResourceManager().CreateRenderTextureForWindow(*myWindow);
-	myImGuiHandler.reset(new Atrium::GUIHandler(myWindow, myWindowTarget, [&]() { HandleGUI(); }));
+
+	#if IS_IMGUI_ENABLED
+	myImGuiContext.reset(new Atrium::Extension::DearImGuiContext(myWindow, myWindowTarget, [&]() { HandleGUI(); }));
+	#endif
 
 	myWindow->Show();
 
@@ -43,7 +45,9 @@ void IrisApplication::HandleFrameLogic(Atrium::FrameGraphicsContext& aFrameConte
 		)
 	);
 
-	myImGuiHandler->Render();
+	#if IS_IMGUI_ENABLED
+	myImGuiContext->Render(aFrameContext);
+	#endif
 }
 
 void IrisApplication::HandleShutdown()
@@ -51,6 +55,8 @@ void IrisApplication::HandleShutdown()
 	
 }
 
+
+#if IS_IMGUI_ENABLED
 void IrisApplication::HandleGUI()
 {
 	if (ImGui::BeginMainMenuBar())
@@ -71,3 +77,4 @@ void IrisApplication::HandleGUI()
 
 	ImGui::DockSpaceOverViewport(0, 0, ImGuiDockNodeFlags_PassthruCentralNode);
 }
+#endif
