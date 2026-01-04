@@ -13,7 +13,7 @@ bool IrisApplication::HandleStartup()
 {
 	myWindow = GetWindowHandler().NewWindow();
 	myWindow->SetTitle("Iris Application Window");
-	myWindow->SetSize(Atrium::SizeT<int>(640, 480));
+	myWindow->SetSize(Atrium::Vector2<int>(640, 480));
 	myWindow->SetWindowState(Atrium::Window::WindowState::Maximized);
 
 	myWindow->OnClosed.Connect(this, [&]() { Exit(); });
