@@ -25,6 +25,8 @@ namespace Iris
 
 			if (target.Optimization != Sharpmake.Optimization.Retail)
 				conf.AddPrivateDependency<DearImGui>(target);
+			
+			Atrium.Configuration.EnableProfiling = true;
 
 			// conf.VcxprojUserFile = new Sharpmake.Project.Configuration.VcxprojUserFileSettings();
 			// conf.VcxprojUserFile.LocalDebuggerWorkingDirectory = "$(OutputPath)../data/";
