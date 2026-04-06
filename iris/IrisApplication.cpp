@@ -69,6 +69,8 @@ void IrisApplication::HandleGUI()
 			ImGui::Selectable("Save..");
 			ImGui::Selectable("Save as..");
 			ImGui::EndDisabled();
+			if (ImGui::Selectable("Exit"))
+				Exit();
 			ImGui::EndMenu();
 		}
 
