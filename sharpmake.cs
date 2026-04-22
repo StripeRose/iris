@@ -1,23 +1,28 @@
-using System.IO;
+using Sharpmake;
 
-[module: Sharpmake.Include("atrium/engine/sharpmake.cs")]
-[module: Sharpmake.Include("iris/sharpmake.cs")]
+[module: Include("atrium/sharpmake.cs")]
+[module: Include("iris/sharpmake.cs")]
 
 namespace Iris
 {
-	[Sharpmake.Generate]
-	public class IrisSolution : Atrium.Solution
+	[Generate]
+	public class IrisSolution : Solution
 	{
 		public IrisSolution()
 		{
 			Name = "Iris";
+
+			AddTargets(new Target(
+				Platform.win64,
+				DevEnv.vs2022,
+				Util.AllFlags<Optimization>()
+			));
 		}
 
-		public override void ConfigureAll(Sharpmake.Solution.Configuration conf, Sharpmake.Target target)
+		[Configure]
+		public void ConfigureAll(Configuration conf, Target target)
 		{
-			base.ConfigureAll(conf, target);
-			conf.SolutionPath = "[solution.SharpmakeCsPath]";
-
+			Util.SetDefaultBuildArguments(conf, target);
 			conf.AddProject<IrisExecutable>(target);
 		}
 	}
@@ -26,16 +31,8 @@ namespace Iris
 public static class Main
 {
 	[Sharpmake.Main]
-	public static void SharpmakeMain(Sharpmake.Arguments arguments)
+	public static void SharpmakeMain(Arguments arguments)
 	{
-		FileInfo fileInfo = Sharpmake.Util.GetCurrentSharpmakeFileInfo();
-
-		Atrium.Configuration.SolutionDirectory = fileInfo.DirectoryName;
-		Atrium.Configuration.BuildDirectory = Path.Combine(
-			fileInfo.DirectoryName,
-			"build"
-		);
-		
 		arguments.Generate<Iris.IrisSolution>();
 	}
 }

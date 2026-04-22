@@ -1,35 +1,37 @@
-using System.IO;
-
-[module: Sharpmake.Include("../atrium/engine/sharpmake.cs")]
-
-[module: Sharpmake.Include("../atrium/extensions/DearImGui/sharpmake.cs")]
+using Sharpmake;
 
 namespace Iris
 {
-	[Sharpmake.Generate]
-	public class IrisExecutable : Atrium.ExecutableProject
+	[Generate]
+	public class IrisExecutable : Project
 	{
 		public IrisExecutable()
 		{
 			Name = "Iris executable";
 			SourceRootPath = "[project.SharpmakeCsPath]";
+
+			AddTargets(new Target(
+				Platform.win64,
+				Util.AllFlags<DevEnv>(),
+				Util.AllFlags<Optimization>()
+			));
 		}
 
-		public override void ConfigureAll(Sharpmake.Project.Configuration conf, Sharpmake.Target target)
+		[Configure]
+		public void ConfigureAll(Configuration conf, Target target)
 		{
-			base.ConfigureAll(conf, target);
-
+			Util.SetDefaultBuildArguments(conf, target);
 			conf.SolutionFolder = "Executables";
 			
 			conf.AddPrivateDependency<Atrium.Engine>(target);
 
 			if (target.Optimization != Sharpmake.Optimization.Retail)
-				conf.AddPrivateDependency<DearImGui>(target);
-			
-			Atrium.Configuration.EnableProfiling = true;
+				conf.AddPrivateDependency<Atrium.Extension.DearImGui>(target);
 
-			// conf.VcxprojUserFile = new Sharpmake.Project.Configuration.VcxprojUserFileSettings();
-			// conf.VcxprojUserFile.LocalDebuggerWorkingDirectory = "$(OutputPath)../data/";
+			if (target.Platform == Platform.win32 || target.Platform == Platform.win64)
+				conf.Options.Add(Sharpmake.Options.Vc.Linker.SubSystem.Windows);
+
+			conf.Output = Configuration.OutputType.Exe;
 		}
 	}
 }
