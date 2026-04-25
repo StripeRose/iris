@@ -19,8 +19,8 @@ private:
 	std::shared_ptr<Atrium::Window> myWindow;
 	std::shared_ptr<Atrium::RenderTexture> myWindowTarget;
 
-	#if IS_IMGUI_ENABLED
+#if IS_IMGUI_ENABLED
 	void HandleGUI();
 	std::unique_ptr<Atrium::Extension::DearImGuiContext> myImGuiContext;
-	#endif
+#endif
 };

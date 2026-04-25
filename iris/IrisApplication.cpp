@@ -20,9 +20,9 @@ bool IrisApplication::HandleStartup()
 
 	myWindowTarget = GetGraphicsHandler().GetResourceManager().CreateRenderTextureForWindow(*myWindow);
 
-	#if IS_IMGUI_ENABLED
+#if IS_IMGUI_ENABLED
 	myImGuiContext.reset(new Atrium::Extension::DearImGuiContext(myWindow, myWindowTarget, [&]() { HandleGUI(); }));
-	#endif
+#endif
 
 	myWindow->Show();
 
@@ -45,14 +45,14 @@ void IrisApplication::HandleFrameLogic(Atrium::FrameGraphicsContext& aFrameConte
 		)
 	);
 
-	#if IS_IMGUI_ENABLED
+#if IS_IMGUI_ENABLED
 	myImGuiContext->Render(aFrameContext);
-	#endif
+#endif
 }
 
 void IrisApplication::HandleShutdown()
 {
-	
+
 }
 
 
