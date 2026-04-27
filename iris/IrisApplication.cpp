@@ -11,6 +11,8 @@
 
 bool IrisApplication::HandleStartup()
 {
+	myFrameGraphics = GetGraphicsHandler().CreateFrameGraphicsContext();
+
 	myWindow = GetWindowHandler().NewWindow();
 	myWindow->SetTitle("Iris Application Window");
 	myWindow->SetSize(Atrium::Vector2<int>(640, 480));
@@ -29,14 +31,17 @@ bool IrisApplication::HandleStartup()
 	return true;
 }
 
-void IrisApplication::HandleFrameLogic(Atrium::FrameGraphicsContext& aFrameContext)
+void IrisApplication::HandleFrameLogic()
 {
 	static auto startPoint = std::chrono::high_resolution_clock::now();
 	const auto millisecondsElapsed = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - startPoint).count();
 
 	const float secondsElapsed = static_cast<float>(millisecondsElapsed) / 1000.f;
 
-	aFrameContext.ClearColor(
+	if (!myFrameGraphics)
+		return;
+
+	myFrameGraphics->ClearColor(
 		myWindowTarget,
 		Atrium::Lerp(
 			Atrium::Color::Predefined::CornflowerBlue,
@@ -46,7 +51,7 @@ void IrisApplication::HandleFrameLogic(Atrium::FrameGraphicsContext& aFrameConte
 	);
 
 #if IS_IMGUI_ENABLED
-	myImGuiContext->Render(aFrameContext);
+	myImGuiContext->Render(*myFrameGraphics);
 #endif
 }
 

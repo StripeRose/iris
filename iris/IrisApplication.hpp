@@ -12,10 +12,12 @@ class IrisApplication : public Atrium::AtriumApplication
 {
 public:
 	bool HandleStartup() override;
-	void HandleFrameLogic(Atrium::FrameGraphicsContext& aFrameContext) override;
+	void HandleFrameLogic() override;
 	void HandleShutdown() override;
 
 private:
+	std::shared_ptr<Atrium::FrameGraphicsContext> myFrameGraphics;
+
 	std::shared_ptr<Atrium::Window> myWindow;
 	std::shared_ptr<Atrium::RenderTexture> myWindowTarget;
 
