@@ -11,6 +11,8 @@
 class IrisApplication : public Atrium::AtriumApplication
 {
 public:
+	IrisApplication();
+
 	bool HandleStartup() override;
 	void HandleFrameLogic() override;
 	void HandleShutdown() override;

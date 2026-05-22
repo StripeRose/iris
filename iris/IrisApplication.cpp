@@ -9,6 +9,16 @@
 
 #include <chrono>
 
+IrisApplication::IrisApplication()
+	: AtriumApplication(Atrium::ApplicationParameters{
+		.Name = "Iris",
+		.Version {"1.0.0"},
+		.Graphics = Atrium::ApplicationParameters::DirectX12
+		})
+{
+
+}
+
 bool IrisApplication::HandleStartup()
 {
 	myFrameGraphics = GetGraphicsHandler().CreateFrameGraphicsContext();
@@ -37,9 +47,6 @@ void IrisApplication::HandleFrameLogic()
 	const auto millisecondsElapsed = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - startPoint).count();
 
 	const float secondsElapsed = static_cast<float>(millisecondsElapsed) / 1000.f;
-
-	if (!myFrameGraphics)
-		return;
 
 	myFrameGraphics->ClearColor(
 		myWindowTarget,
